@@ -29,11 +29,23 @@ mergeN iL = foldl merge2tail [] iL
 -- 2
 {- (a) count -}
 
+count val iL = length (filter (==val) iL) 
+
 
 
 
 {- (b) histogram  -}
 
+histogram iL = merge2tuple iL (map (histogramcounthelper iL) iL)
+
+merge2tuple iL iL2 = reverse (merge2tuplehelper iL iL2 [])
+
+merge2tuplehelper [] [] buffer = buffer
+merge2tuplehelper [] (x:xs) buffer = error("lists are not of same length")
+merge2tuplehelper (x:xs) [] buffer = error("lists are not of same length")
+merge2tuplehelper (x:xs) (y:ys) buffer = merge2tuplehelper xs ys ((x,y):buffer)
+
+histogramcounthelper iL val = count val iL
 
 
 
