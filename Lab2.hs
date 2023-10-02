@@ -36,7 +36,7 @@ count val iL = length (filter (==val) iL)
 
 {- (b) histogram  -}
 
-histogram iL = merge2tuple iL (map (histogramcounthelper iL) iL)
+histogram iL = deleteduplicates (merge2tuple iL (map (histogramcounthelper iL) iL))
 
 merge2tuple iL iL2 = reverse (merge2tuplehelper iL iL2 [])
 
@@ -46,6 +46,12 @@ merge2tuplehelper (x:xs) [] buffer = error("lists are not of same length")
 merge2tuplehelper (x:xs) (y:ys) buffer = merge2tuplehelper xs ys ((x,y):buffer)
 
 histogramcounthelper iL val = count val iL
+
+deleteduplicates iL = reverse (deleteduplicateshelper iL [] [])
+
+deleteduplicateshelper [] buff buff2 = buff
+deleteduplicateshelper (x:xs) buff buff2 | ((count x buff2) /= 0) = deleteduplicateshelper xs buff buff2
+                                         | otherwise = deleteduplicateshelper xs (x:buff) (x:buff2)
 
 
 
