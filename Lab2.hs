@@ -18,12 +18,12 @@ merge2helper (x:xs) (y:ys) buffer = merge2helper xs ys (y:(x:buffer))
 
 {- (b) merge2Tail -}
 
-merge2tail iL iL2 = reverse (merge2helper iL iL2 [])
+merge2Tail iL iL2 = reverse (merge2helper iL iL2 [])
 
 
 {- (c) mergeN -}
 
-mergeN iL = foldl merge2tail [] iL
+mergeN iL = foldl merge2Tail [] iL
 
 
 -- 2
@@ -58,13 +58,14 @@ deleteduplicateshelper (x:xs) buff buff2 | ((count x buff2) /= 0) = deleteduplic
 -- 3                
 {- (a) concatAll -}
 
-
+-- concatAll sL = (foldr (++) [] sL)
 
 
 {- (b) concat2Either -}               
---data AnEither  = AString String | AnInt Int
---                deriving (Show, Read, Eq)
+-- data AnEither  = AString String | AnInt Int
+--                 deriving (Show, Read, Eq)
 
+-- concat2Either iL = concatAll iL
 
 
 -- 4      
@@ -73,27 +74,34 @@ deleteduplicateshelper (x:xs) buff buff2 | ((count x buff2) /= 0) = deleteduplic
 
 
 
--- data Op = Add | Sub | Mul | Pow
---           deriving (Show, Read, Eq)
+data Op = Add | Sub | Mul | Pow
+          deriving (Show, Read, Eq)
 
--- evaluate:: Op -> Int -> Int -> Int
--- evaluate Add x y =  x+y
--- evaluate Sub   x y =  x-y
--- evaluate Mul x y =  x*y
--- evaluate Pow x y = x^y
+evaluate:: Op -> Int -> Int -> Int
+evaluate Add x y =  x+y
+evaluate Sub x y =  x-y
+evaluate Mul x y =  x*y
+evaluate Pow x y = x^y
 
--- data ExprTree a = ELEAF a | ENODE Op (ExprTree a) (ExprTree a)
---                   deriving (Show, Read, Eq)
+data ExprTree a = ELEAF a | ENODE Op (ExprTree a) (ExprTree a)
+                  deriving (Show, Read, Eq)
 
 -- 5 
 {- evaluateTree -}
+
+evaluateTree (ELEAF v) = v
+evaluateTree (ENODE op left right) = evaluate (op) (evaluateTree left) (evaluateTree right)
 
 
 
 -- 6
 {- printInfix -}
 
-
+printInfix (ELEAF v) = show v
+printInfix (ENODE (Add) left right) = "(" ++ (printInfix left) ++ " `Add` " ++ (printInfix right) ++ ")"
+printInfix (ENODE (Sub) left right) = "(" ++ (printInfix left) ++ " `Sub` " ++ (printInfix right) ++ ")"
+printInfix (ENODE (Mul) left right) = "(" ++ (printInfix left) ++ " `Mul` " ++ (printInfix right) ++ ")"
+printInfix (ENODE (Pow) left right) = "(" ++ (printInfix left) ++ " `Pow` " ++ (printInfix right) ++ ")"
 
 --7
 {- createRTree -}
