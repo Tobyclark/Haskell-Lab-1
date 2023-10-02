@@ -1,5 +1,5 @@
 -- CptS 355 - Lab 2 (Haskell) - Fall 2023
--- Name: 
+-- Name: Toby Clark
 
 
 module Lab2
